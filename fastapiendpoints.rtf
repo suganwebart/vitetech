@@ -1,0 +1,398 @@
+{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Calibri;}{\f2\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red0\green0\blue255;}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\qc\ul\b\f0\fs40\lang9 CREATING REST API USING FastAPI\par
+\ulnone\b0\fs32\par
+
+\pard{\pntext\f2\'B7\tab}{\*\pn\pnlvlblt\pnf2\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 REST API USING FastAPI consists of four essential parts\par
+{\pntext\f2\'B7\tab}HTTP method \par
+{\pntext\f2\'B7\tab}Creating Endpoints\par
+{\pntext\f2\'B7\tab}Path operation decorator\par
+{\pntext\f2\'B7\tab}Path operation function\par
+{\pntext\f2\'B7\tab}Return the content\par
+{\pntext\f2\'B7\tab}Path Parameters: Get an Item by ID\par
+{\pntext\f2\'B7\tab}Path Parameters With Types\par
+{\pntext\f2\'B7\tab}Order Matters: Put Fixed Paths First\par
+{\pntext\f2\'B7\tab}Request Body: Receiving JSON Data Models\par
+{\pntext\f2\'B7\tab}Use pydantic to Declare JSON Data Models (Data Shapes)\par
+{\pntext\f2\'B7\tab}Declare pydantic model \par
+{\pntext\f2\'B7\tab}Automatic Documentation With pydantic\par
+{\pntext\f2\'B7\tab}Use the pydantic Model\par
+{\pntext\f2\'B7\tab}Request Body and Path Parameters\par
+{\pntext\f2\'B7\tab}Input Validation\par
+{\pntext\f2\'B7\tab}Standard Examples for HTTPMethod and Path operation decorator (Pydantic model,@app.post(),@app.get(),@app.put(),@app.delete(),@app.head(),@app.patch(),@app.trace())\par
+
+\pard\sa200\sl276\slmult1\par
+\par
+\ul\b\fs34 REST API USING FastAPI consists of four essential parts\ulnone :\par
+\b0\fs32 Any request made to a REST API USING FastAPI consists of four essential parts: method, endpoint, headers, and body.\par
+
+\pard\sa200\sl276\slmult1      \ul\i HTTP method:\ulnone\i0  describes action or operation.\par
+    \ul\i Endpoint:\ulnone\i0  contains a URI (uniform resource identifier) used to locate the resource on the web.\par
+    \ul\i Headers:\ulnone\i0  contain authentication information such as the API key.\par
+    \ul\i Body:\ulnone\i0  contains the data or any additional information.\par
+\par
+
+\pard\sa200\sl276\slmult1\ul\b\fs36 HTTP method :\fs32\par
+\ulnone\b0 With HTTP, you can communicate with each path \par
+        POST - Create a resource\par
+        GET - Retrieve a resource\par
+        PUT - Update a resource\par
+        DELETE - Delete a resource\par
+        HEAD- Retrieve the headers \par
+        PATCH- Updating a resource partially\par
+        TRACE- Used in detailed inspection of the HTTP request\par
+        OPTIONS -\par
+\ul\b\fs34\par
+\fs36 Creating Endpoints:\fs34\par
+\ulnone\b0\fs32\par
+
+\pard{\pntext\f2\'B7\tab}{\*\pn\pnlvlblt\pnf2\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Endpoints are the primary way that clients interact with a REST API.Path refers to the last part of the URL starting from the first forward slash character (/). So, in a URL like {{\field{\*\fldinst{HYPERLINK https://example.com/items/foo }}{\fldrslt{https://example.com/items/foo\ul0\cf0}}}}\f0\fs32 , the path would be /items/foo.\par
+{\pntext\f2\'B7\tab}A path is also commonly called an \ul\i endpoint or a route\ulnone\i0 , but the \ul\i term path \ulnone\i0 will be used here. \par
+{\pntext\f2\'B7\tab}When you\rquote re building an API, the \ul\i path \ulnone\i0 is the main way you can \ul\i separate resources\ulnone\i0 .\par
+{\pntext\f2\'B7\tab}Endpoints are the primary way that clients interact with a REST API.\par
+{\pntext\f2\'B7\tab}An endpoint is a URL that clients can send requests to, and the server will respond with the appropriate data.\par
+
+\pard\sa200\sl276\slmult1\par
+
+\pard\sa200\sl276\slmult1\ul\b\fs36 Path operation decorator:\par
+\fs32\par
+\ulnone\b0 To create an endpoint in FastAPI, we can use the following. By using these appropriate path operation decorator to handle above HTTP Methods.\par
+    @app.post()\par
+    @app.get()\par
+    @app.put()\par
+    @app.delete()\par
+    @app.options()\par
+    @app.head()\par
+    @app.patch()\par
+    @app.trace()\par
+\par
+\ul\b\fs36 Path operation function:\par
+\fs34\par
+\ulnone\b0\fs32 We define the path operation function below the path operation decorator:\par
+This function will be called by FastAPI whenever it receives a request to the specified URL (/) using a GET operation. In this case, it is an async function.\par
+You could also define it as a normal function instead of using async def:\par
+\par
+\i @app.get("/")\par
+async def root():\par
+\i0\par
+\ul\b\fs36 Return the content:\par
+\b0\fs32\par
+\ulnone You can return a following\par
+
+\pard{\pntext\f2\'B7\tab}{\*\pn\pnlvlblt\pnf2\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 dictionary\par
+{\pntext\f2\'B7\tab}list\par
+{\pntext\f2\'B7\tab}singular values as strings, integers, and so on. \par
+{\pntext\f2\'B7\tab}Return pydantic models\par
+{\pntext\f2\'B7\tab}There are many other objects and models that will be automatically converted to JSON, including object-relational mappers (ORMs) and others. \par
+
+\pard\sa200\sl276\slmult1\par
+
+\pard\sa200\sl276\slmult1\i @app.get("/hello")\par
+async def root():\par
+    return \{"message": "Hello World"\}\par
+\i0\par
+\ul\i URL: {\ulnone{\field{\*\fldinst{HYPERLINK https://example.com/hello/ }}{\fldrslt{https://example.com/hello/\ul0\cf0}}}}\ulnone\f0\fs32\par
+\ul apiendpoint/route/path:\ulnone       hello\par
+\ul path operation decorator:\ulnone\tab @app.get()\par
+\ul pathoperation function:\ulnone         async def root():\par
+\ul return the content:\ulnone                  return \{"message": "Hello World"\}\par
+\ul\i0\par
+\b\fs36 Path Parameters: Get an Item by ID\fs34\par
+\b0\i\fs32\par
+Example:\ulnone\i0\par
+\i @app.get("/items/\{item_id\}")\par
+async def read_item(item_id):\par
+    return \{"item_id": item_id\}\par
+\par
+\ul Explanation\ulnone\i0 :\par
+\i URL:http://127.0.0.1:8000/items/foo\par
+pathparameter value:foo - The value of the path parameter item_id will be passed to your function as the argument item_id.\par
+Response: \{"item_id":"foo"\}\par
+Return value - dictionary\par
+\i0\par
+\ul\b\fs36 Path Parameters With Types\par
+\fs34\par
+\b0\i\fs32 Example:\ulnone\par
+@app.get("/items/\{item_id\}")\par
+async def read_item(item_id: int):\par
+    return \{"item_id": item_id\}\par
+\par
+\ul Explanation:\ulnone\par
+In this case, we declare item_id to be an int.\par
+URL: {{\field{\*\fldinst{HYPERLINK http://127.0.0.1:8000/items/3 }}{\fldrslt{http://127.0.0.1:8000/items/3\ul0\cf0}}}}\f0\fs32\par
+Response: \{"item_id":3\} - Data Conversion occur automatically\par
+\i0\par
+\i In this case, we declare item_id to be an String.\par
+URL: {{\field{\*\fldinst{HYPERLINK http://127.0.0.1:8000/items/foo }}{\fldrslt{http://127.0.0.1:8000/items/foo\ul0\cf0}}}}\f0\fs32\par
+Response: Data Validation occur automatically\par
+\{\par
+    "detail": [\par
+        \{\par
+            "loc": [\par
+                "path",\par
+                "item_id"\par
+            ],\par
+            "msg": "value is not a valid integer",\par
+            "type": "type_error.integer"\par
+        \}\par
+    ]\par
+\}\par
+\par
+\i0 Also, we can use Data Handling With pydantic.So, All the data validation is Occured using pydantic.\par
+\par
+\ul\b\fs36 Order Matters: Put Fixed Paths First\par
+\ulnone\b0\fs32\par
+\ul\i Example\par
+\par
+\ulnone @app.get("/users/me")\par
+async def read_user_me():\par
+    return \{"user_id": "the current user"\}\par
+@app.get("/users/\{user_id\}")\par
+async def read_user(user_id: str):\par
+    return \{"user_id": user_id\}\par
+\par
+\ul Explanation:\par
+\ulnone\par
+
+\pard 
+{\pntext\f0 1.\tab}{\*\pn\pnlvlbody\pnf0\pnindent0\pnstart1\pndec{\pntxta.}}
+\fi-360\li720\sa200\sl276\slmult1 Because path operations are evaluated in order, you need to make sure that the path for /users/me is declared before the one for /users/\{user_id\}:\par
+{\pntext\f0 2.\tab}Otherwise, the path for /users/\{user_id\} would also match for /users/me, thinking that it\rquote s receiving the parameter user_id with a value of "me".\par
+
+\pard\sa200\sl276\slmult1\i0\par
+
+\pard\sa200\sl276\slmult1\ul\b\fs36 Request Body: Receiving JSON Data \fs34 Models\par
+\par
+
+\pard 
+{\pntext\f0 1.\tab}{\*\pn\pnlvlbody\pnf0\pnindent0\pnstart1\pndec{\pntxta.}}
+\fi-360\li720\sa200\sl276\slmult1\ulnone\b0\fs32 When you need to send data from a client to your API, you send it as a request body.\par
+{\pntext\f0 2.\tab}A request body is data sent by the client to your API. \par
+{\pntext\f0 3.\tab}A response body is the data your API sends to the client. \par
+{\pntext\f0 4.\tab}Your API almost always has to send a response body. But clients don\rquote t necessarily need to send request bodies all the time.\par
+
+\pard\sa200\sl276\slmult1\par
+Note: To send data, you should use POST (the most common approach), PUT, DELETE, or PATCH. Sending a body with a GET request has undefined behavior in the specifications.\par
+To declare a request body, you use pydantic models.\par
+\par
+\ul\b\fs36 Use pydantic to Declare JSON Data Models (Data Shapes)\par
+\ulnone\b0\fs32 Create subclasses defining the schema, or data shapes, you want to receive.\par
+\par
+\ul\i pydantic model for item:\par
+\ulnone from pydantic import BaseModel\par
+class Item(BaseModel):\par
+    name: str\par
+    description: Optional[str] = None\par
+    price: float\par
+    tax: Optional[float] = None\par
+\i0\par
+\ul\i JSON Data Models 1:\ulnone\i0\par
+When a model attribute has a default value, it is not required. Otherwise, it is required. To make an attribute optional, you can use None.\par
+For example, the model above declares a JSON object (or Python dict) like this:\par
+\{\par
+    "name": "Foo",\par
+    "description": "An optional description",\par
+    "price": 45.2,\par
+    "tax": 3.5\par
+\}\par
+\par
+\ul\i JSON Data Models 2:\par
+\ulnone\i0 In this case, since description and tax are optional because they have a default value of None, this JSON object would also be valid:\par
+\{\par
+    "name": "Foo",\par
+    "price": 45.2\par
+\}\par
+\par
+Both are valid\par
+\par
+\ul\b\fs36 Declare pydantic model :\par
+\ulnone\b0\fs32\par
+Next, add the new pydantic model to your path operation as a parameter. You declare it the same way you declared path parameters:\par
+\par
+\i @app.post("/items/")\par
+async def create_item(item: Item):\par
+    return item\par
+\par
+\i0 The parameter item has a type hint of Item, which means that item is declared as an instance of the class Item.\par
+With that Python type declaration, FastAPI will:\par
+
+\pard{\pntext\f2\'B7\tab}{\*\pn\pnlvlblt\pnf2\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Read the body of the request as JSON\par
+{\pntext\f2\'B7\tab}Convert the corresponding types if needed\par
+{\pntext\f2\'B7\tab}Validate the data and return a clear error if it is invalid\par
+{\pntext\f2\'B7\tab}Give you the received data in the parameter item\f1\par
+{\pntext\f2\'B7\tab}Generate JSON Schema definitions for your \par
+
+\pard\sa200\sl276\slmult1\ul\b\f0\fs36 Automatic Documentation With pydantic\par
+\ulnone\b0\fs32\par
+\ul\b\fs36 Use the pydantic Model\fs32\par
+\ulnone\b0 Inside the function, you can access all the attributes of the model object directly:\par
+\par
+\i @app.post("/items/")\par
+async def create_item(item: Item):\par
+    item_dict = item.dict()\par
+    if item.tax:\par
+        price_with_tax = item.price + item.tax\par
+        item_dict.update(\{"price_with_tax": price_with_tax\})\par
+    return item_dict\par
+\i0\par
+The parameter item is declared as an instance of the class Item, and FastAPI will make sure that you receive exactly that in your function instead of a dictionary or something else.\par
+\par
+\ul\b\fs36 Request Body and Path Parameters\fs34\par
+\ulnone\b0\fs32 You can declare path parameters and a request body at the same time.\par
+FastAPI will recognize that the \ul\i function parameters that match path parameters \ulnone\i0 should be \ul\i taken from the path \ulnone\i0 and that \ul\i function parameters that are declared to be pydantic models \ulnone should be \ul taken from the request body\ulnone :\par
+\i0\par
+\i @app.put("/items/\{item_id\}")\par
+async def create_item(item_id: int, item: Item):\par
+    return \{"item_id": item_id, **item.dict()\}\par
+\i0\par
+This way, you can declare path parameters and JSON request bodies, and FastAPI will take care of doing all the \ul\i data validation, serialization, and documentation for you\ulnone .\par
+\i0  You could verify it by going to the same API documentation at /docs or by using other tools like Postman with a graphical interface or Curl in the command line.\par
+In a similar way, you can declare more complex request bodies, like \ul\i lists, and other types of request data, like query parameters, cookies, headers, form inputs, files, \ulnone\i0 and so on.\par
+\par
+\ul\b\fs34 Input Validation:\b0\fs32\par
+\ulnone FastAPI can automatically validate request data using Pydantic, a data validation library.\par
+We can define a Pydantic model for our request data and use it as a parameter in our endpoint function.\par
+\par
+\i class Item(BaseModel):\par
+    name: str\par
+    price: float\par
+    is_offer: Optional[bool] = None\par
+\par
+@app.post("/items/")\par
+async def create_item(item: Item):\par
+    return item\par
+\i0\par
+
+\pard 
+{\pntext\f0 1.\tab}{\*\pn\pnlvlbody\pnf0\pnindent0\pnstart1\pndec{\pntxta.}}
+\fi-360\li720\sa200\sl276\slmult1 This endpoint responds to POST requests at /items/.\par
+{\pntext\f0 2.\tab}The item parameter is defined as an instance of the Item model and is automatically validated by FastAPI so when you try to create a new item, it will only get created if the datatypes are as defined in the Item class.\par
+{\pntext\f0 3.\tab}The function returns the validated item.\par
+
+\pard\sa200\sl276\slmult1\par
+\ul\b\fs36 Standard Examples for HTTPMethod and Path operation decorator\par
+\par
+
+\pard\sa200\sl276\slmult1 Pydantic model\par
+\ulnone\b0\fs32\par
+\i items = []\par
+\par
+# Pydantic model for item data\par
+class Item(BaseModel):\par
+    name: str\par
+    description: str\par
+\ul\b\fs36\par
+\ulnone\b0\fs32 items = \{\par
+    1: \{"name": "Item 1", "description": "Description for Item 1"\},\par
+    2: \{"name": "Item 2", "description": "Description for Item 2"\},\par
+    3: \{"name": "Item 3", "description": "Description for Item 3"\},\par
+\}\par
+\i0\par
+\ul\b\fs36 Create an item in Fast API\par
+\par
+\ulnone\b0\fs32 Creating an item in FastAPI involves defining a data model for the item, creating an API endpoint to handle POST requests to create the item, and setting up the database to store the item. \par
+\par
+\b\i # Create an item\b0\par
+@app.post("/items/", response_model=Item)\par
+async def create_item(item: Item):\par
+    items.append(item)\par
+    return item\par
+\i0\fs36\par
+\ul\b Get an item in Fast API\par
+\ulnone\b0\par
+\fs32 To retrieve (GET) an item in FastAPI, you need to create an API endpoint that handles GET requests for a specific item. \par
+\par
+\b\i # Get an item\b0\par
+@app.get("/items/\{item_id\}", response_model=Item)\par
+async def read_item(item_id: int):\par
+    if item_id < 0 or item_id >= len(items):\par
+        raise HTTPException(status_code=404, detail="Item not found")\par
+    return items[item_id]\par
+\i0\par
+\ul\b\fs36 Update an item in Fast API\par
+\par
+\ulnone\b0\fs32 To update (PUT) an item in FastAPI, you need to create an API endpoint that handles PUT requests to modify an existing item. \par
+\par
+\b\i # Update an item\par
+\b0 @app.put("/items/\{item_id\}", response_model=Item)\par
+async def update_item(item_id: int, item: Item):\par
+    if item_id < 0 or item_id >= len(items):\par
+        raise HTTPException(status_code=404, detail="Item not found")\par
+    items[item_id] = item\par
+    return item\par
+\i0\par
+\ul\b\fs36 Patch an item in Fast API\par
+\ulnone\b0\fs32\par
+\b\i # Patch an item\b0\par
+@app.patch("/items/\{item_id\}", response_model=Item)\par
+async def patch_item(item_id: int = Path(..., title="The ID of the item to update"),\par
+                      item: Item):\par
+    if item_id not in items:\par
+        raise HTTPException(status_code=404, detail="Item not found")\par
+    # Update only the provided fields\par
+    update_data = item.dict(exclude_unset=True)\par
+    items[item_id].update(update_data)\par
+\i0     return \{"message": f"Item \{item_id\} has been updated"\}\par
+\par
+\ul\b\fs36 Delete an item in Fast API\par
+\ulnone\b0\fs32\par
+To delete an item in FastAPI, you need to create an API endpoint that handles DELETE requests for a specific item.\par
+\par
+\b\i # Delete an item\b0\par
+@app.delete("/items/\{item_id\}", response_model=Item)\par
+async def delete_item(item_id: int):\par
+    if item_id < 0 or item_id >= len(items):\par
+        raise HTTPException(status_code=404, detail="Item not found")\par
+    deleted_item = items.pop(item_id)\par
+    return deleted_item\par
+\par
+\ul\b\i0\fs36 HEAD method \par
+\ulnone\b0\fs32\par
+
+\pard{\pntext\f2\'B7\tab}{\*\pn\pnlvlblt\pnf2\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Handling the HEAD method explicitly in FastAPI involves understanding how to respond to HEAD requests for specific endpoints. \par
+{\pntext\f2\'B7\tab}The HEAD method is used when clients want to retrieve headers that would be returned for a GET request to the same resource, but without receiving the actual response body.\par
+
+\pard\sa200\sl276\slmult1\par
+\i @app.get("/items/\{item_id\}")\par
+@app.head("/items/\{item_id\}")\par
+async def read_item_head(item_id: int):\par
+    if item_id < 1 or item_id > 3:\par
+        raise HTTPException(status_code=404, detail="Item not found")\par
+    item_data = items[item_id]\par
+    if app.request.method == "HEAD":\par
+        # For HEAD requests, return only headers (no body content)\par
+        headers_only = \{\par
+            "Content-Length": len(str(item_data)),\par
+            "Content-Type": "application/json",  # Adjust as per your response content type\par
+        \}\par
+        return headers_only\par
+    # For GET requests, return the full item details\par
+    return item_data\par
+\i0\fs36\par
+\ul\b Trace Method in Fastapi\par
+\par
+\ulnone\b0\fs32 Handling the TRACE method in FastAPI involves creating an endpoint that echoes back the received request details. \par
+The TRACE method is used for diagnostic purposes, allowing clients to see what changes have been made by intermediate servers while passing through them.\par
+\par
+\i @app.trace("/trace")\par
+async def trace_request(request: Request):\par
+    # Get details from the request\par
+    headers = \{k: v for k, v in request.headers.items()\}\par
+    query_params = \{k: v for k, v in request.query_params.items()\}\par
+    client_host = request.client.host\par
+    # Construct the response\par
+    response_content = \{\par
+        "headers": headers,\par
+        "query_params": query_params,\par
+        "client_host": client_host,\par
+    \}\par
+    return response_content\par
+
+\pard\sa200\sl276\slmult1\i0\par
+
+\pard\sa200\sl276\slmult1\par
+\ul\b\fs36\par
+\par
+}
+ 
